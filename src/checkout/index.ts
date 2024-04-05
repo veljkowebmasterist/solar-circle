@@ -40,14 +40,13 @@ function changeResults(size: string, sizeInput: HTMLElement) {
   ) as FamilyEnergyData[];
   //destructure familyEnergy object to get the values
   const { gesamterzeugung, module } = familyEnergy as FamilyEnergyData;
-  console.log(gesamterzeugung, module);
 
   //get the fesamterzeugung element and replace the text with the value from the familyEnergy object
   const gesamterzeugungElement = document.getElementById('gesamtleistung');
   gesamterzeugungElement!.textContent = gesamterzeugung.toString();
   //get the module input element and replace the text with the value from the familyEnergy object
-  const moduleElement = document.getElementById('module');
-  moduleElement!.textContent = module.toString();
+  const moduleElement = document.getElementById('module') as HTMLInputElement;
+  moduleElement!.value = module.toString();
   //set the price to be 1099*the number of module, get the price element and set the text content to the price
   const price = 1099 * module;
   const priceElement = document.getElementById('price');
