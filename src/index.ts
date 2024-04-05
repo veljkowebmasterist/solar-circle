@@ -47,7 +47,7 @@ export const familyEnergyData: FamilyEnergyData[] = [
 window.Webflow ||= [];
 window.Webflow.push(() => {
   // types for the data
-
+  const isMobile = window.matchMedia('(max-width: 767px)').matches;
   //get individual values from the array based on what is selected in theradio button group named size reffering to family size
 
   function getSelectedRadioValue(groupName: string) {
@@ -191,25 +191,26 @@ window.Webflow.push(() => {
     labels: ['Gesamterzeugung', 'Gesamtbedarf'],
     datasets: [
       {
-        label: 'in kWh',
         data: [gesamterzeugung, gesamtbedarf], // Example values in kWh for Gesamterzeugung and Gesamtbedarf
         backgroundColor: ['#079561', '#F0F4F2'],
-        barPercentage: 0.5,
-        categoryPercentage: 0.5,
+        barPercentage: 0.6,
+        categoryPercentage: 1,
       },
     ],
   };
 
   const configBarChart = {
     //fix the scale on the x-axis so it doesnt adjust to the data
+    //change the position of the labels on the y axis to be vertical
 
     type: 'bar',
     data: dataBarChart,
     options: {
-      indexAxis: 'y',
+      indexAxis: isMobile ? 'x' : 'y',
       plugins: {
         legend: {
-          display: true,
+          display: false,
+          position: 'top',
         },
         tooltip: {
           enabled: true,
@@ -230,7 +231,7 @@ window.Webflow.push(() => {
           },
         },
         y: {
-          stacked: false,
+          stacked: true,
           grid: {
             display: false,
           },
@@ -240,6 +241,7 @@ window.Webflow.push(() => {
         duration: 1500,
       },
       responsive: true,
+      aspectRatio: isMobile ? 1 : 2,
     },
   };
 
