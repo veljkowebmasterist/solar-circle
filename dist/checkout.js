@@ -14450,7 +14450,7 @@
       gesamtbedarf: 3500,
       imageWinter: "https://via.placeholder.com/150",
       imageSummer: "https://via.placeholder.com/150",
-      module: 2.5
+      module: 2
     },
     {
       familySize: "Grofamilie",
@@ -14483,12 +14483,6 @@
     console.log(familyEnergy);
     let { eigennutzung, autarkie, gesamterzeugung, gesamtbedarf } = familyEnergy;
     console.log(eigennutzung, autarkie, gesamterzeugung, gesamtbedarf);
-    document.querySelectorAll(".autarkie").forEach((element) => {
-      element.textContent = autarkie.toString();
-    });
-    document.querySelectorAll(".eigennutzung").forEach((element) => {
-      element.textContent = eigennutzung.toString();
-    });
     const data = {
       labels: ["Bezug von SolarCircle", "Bezug von Netz"],
       datasets: [
@@ -14669,6 +14663,44 @@
       });
     });
   });
+
+  // src/checkout.ts
+  console.log("Webflow loaded");
+  window.Webflow ||= [];
+  window.Webflow.push(() => {
+    console.log("Webflow loaded");
+    const singlehaushaltCheckbox = document.getElementById("singlehaushalt");
+    singlehaushaltCheckbox.checked = true;
+    const sizeInputs = document.getElementsByName("size");
+    let size = "Singlehaushalt";
+    for (const sizeInput of sizeInputs) {
+      if (sizeInput.checked) {
+        size = sizeInput.value;
+        break;
+      }
+    }
+    for (const sizeInput of sizeInputs) {
+      sizeInput.addEventListener("change", () => {
+        size = changeResults(size, sizeInput);
+      });
+    }
+  });
+  function changeResults(size, sizeInput) {
+    size = sizeInput.value;
+    const [familyEnergy] = familyEnergyData.filter(
+      (data) => data.familySize === size
+    );
+    const { gesamterzeugung, module } = familyEnergy;
+    console.log(gesamterzeugung, module);
+    const gesamterzeugungElement = document.getElementById("gesamtleistung");
+    gesamterzeugungElement.textContent = gesamterzeugung.toString();
+    const moduleElement = document.getElementById("module");
+    moduleElement.textContent = module.toString();
+    const price = 1099 * module;
+    const priceElement = document.getElementById("price");
+    priceElement.textContent = price.toString();
+    return size;
+  }
 })();
 /*! Bundled license information:
 
@@ -14712,4 +14744,4 @@ chartjs-plugin-deferred/dist/chartjs-plugin-deferred.esm.js:
    * Released under the MIT license
    *)
 */
-//# sourceMappingURL=index.js.map
+//# sourceMappingURL=checkout.js.map

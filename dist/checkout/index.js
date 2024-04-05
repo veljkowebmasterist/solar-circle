@@ -14669,6 +14669,45 @@
       });
     });
   });
+
+  // src/checkout/index.ts
+  console.log("Webflow loaded");
+  window.Webflow ||= [];
+  window.Webflow.push(() => {
+    console.log("Webflow loaded");
+    const singlehaushaltCheckbox = document.getElementById("singlehaushalt");
+    singlehaushaltCheckbox.checked = true;
+    const sizeInputs = document.getElementsByName("size");
+    let size = "Singlehaushalt";
+    size = changeResults(size, sizeInputs[0]);
+    for (const sizeInput of sizeInputs) {
+      if (sizeInput.checked) {
+        size = sizeInput.value;
+        break;
+      }
+    }
+    for (const sizeInput of sizeInputs) {
+      sizeInput.addEventListener("change", () => {
+        size = changeResults(size, sizeInput);
+      });
+    }
+  });
+  function changeResults(size, sizeInput) {
+    size = sizeInput.value;
+    const [familyEnergy] = familyEnergyData.filter(
+      (data) => data.familySize === size
+    );
+    const { gesamterzeugung, module } = familyEnergy;
+    console.log(gesamterzeugung, module);
+    const gesamterzeugungElement = document.getElementById("gesamtleistung");
+    gesamterzeugungElement.textContent = gesamterzeugung.toString();
+    const moduleElement = document.getElementById("module");
+    moduleElement.textContent = module.toString();
+    const price = 1099 * module;
+    const priceElement = document.getElementById("price");
+    priceElement.textContent = price.toString();
+    return size;
+  }
 })();
 /*! Bundled license information:
 

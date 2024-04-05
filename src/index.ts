@@ -1,48 +1,53 @@
 import Chart from 'chart.js/auto';
 import ChartDeferred from 'chartjs-plugin-deferred';
 
+export interface FamilyEnergyData {
+  familySize: string;
+  eigennutzung: number;
+  autarkie: number;
+  gesamterzeugung: number;
+  gesamtbedarf: number;
+  imageWinter: string;
+  imageSummer: string;
+  module: number;
+}
+
+export const familyEnergyData: FamilyEnergyData[] = [
+  {
+    familySize: 'Singlehaushalt',
+    eigennutzung: 100, // Example value in kWh
+    autarkie: 16, // Example value in percentage
+    gesamterzeugung: 400, // Total production in kWh
+    gesamtbedarf: 2500, // Total demand in kWh
+    imageWinter: 'https://via.placeholder.com/150',
+    imageSummer: 'https://via.placeholder.com/150',
+    module: 1,
+  },
+  {
+    familySize: 'Kleinfamilie',
+    eigennutzung: 96,
+    autarkie: 27,
+    gesamterzeugung: 1000,
+    gesamtbedarf: 3500,
+    imageWinter: 'https://via.placeholder.com/150',
+    imageSummer: 'https://via.placeholder.com/150',
+    module: 2.5,
+  },
+  {
+    familySize: 'Grofamilie',
+    eigennutzung: 84,
+    autarkie: 34,
+    gesamterzeugung: 2000,
+    gesamtbedarf: 5000,
+    imageWinter: 'https://via.placeholder.com/150',
+    imageSummer: 'https://via.placeholder.com/150',
+    module: 5,
+  },
+];
 window.Webflow ||= [];
 window.Webflow.push(() => {
   // types for the data
-  type FamilyEnergyData = {
-    familySize: string;
-    eigennutzung: number;
-    autarkie: number;
-    gesamterzeugung: number;
-    gesamtbedarf: number;
-    imageWinter?: string;
-    imageSummer?: string;
-  };
 
-  const familyEnergyData: FamilyEnergyData[] = [
-    {
-      familySize: 'Singlehaushalt',
-      eigennutzung: 100, // Example value in kWh
-      autarkie: 16, // Example value in percentage
-      gesamterzeugung: 400, // Total production in kWh
-      gesamtbedarf: 2500, // Total demand in kWh
-      imageWinter: 'https://via.placeholder.com/150',
-      imageSummer: 'https://via.placeholder.com/150',
-    },
-    {
-      familySize: 'Kleinfamilie',
-      eigennutzung: 96,
-      autarkie: 27,
-      gesamterzeugung: 1000,
-      gesamtbedarf: 3500,
-      imageWinter: 'https://via.placeholder.com/150',
-      imageSummer: 'https://via.placeholder.com/150',
-    },
-    {
-      familySize: 'Grofamilie',
-      eigennutzung: 84,
-      autarkie: 34,
-      gesamterzeugung: 2000,
-      gesamtbedarf: 5000,
-      imageWinter: 'https://via.placeholder.com/150',
-      imageSummer: 'https://via.placeholder.com/150',
-    },
-  ];
   //get individual values from the array based on what is selected in theradio button group named size reffering to family size
 
   function getSelectedRadioValue(groupName: string) {
@@ -68,6 +73,14 @@ window.Webflow.push(() => {
   let { eigennutzung, autarkie, gesamterzeugung, gesamtbedarf } = familyEnergy as FamilyEnergyData;
 
   console.log(eigennutzung, autarkie, gesamterzeugung, gesamtbedarf);
+
+  // find the text with the class autarkie and eignenutzung and update the text content with the values from the selected size
+  document.querySelectorAll('.autarkie').forEach((element) => {
+    element.textContent = autarkie.toString();
+  });
+  document.querySelectorAll('.eigennutzung').forEach((element) => {
+    element.textContent = eigennutzung.toString();
+  });
 
   const data = {
     labels: ['Bezug von SolarCircle', 'Bezug von Netz'],
