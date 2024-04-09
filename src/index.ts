@@ -96,10 +96,6 @@ window.Webflow.push(() => {
     ],
   };
 
-  // find the radio button singlehaushalt and set it as checked
-  const singlehaushaltCheckbox = document.getElementById('singlehaushalt') as HTMLInputElement;
-  singlehaushaltCheckbox.checked = true;
-
   const config = {
     type: 'doughnut',
     data: data,
