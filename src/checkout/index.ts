@@ -1,39 +1,62 @@
 // eslint-disable-next-line simple-import-sort/imports
 import { familyEnergyData, type FamilyEnergyData } from 'src/index.js';
-console.log('Webflow loaded');
 window.Webflow ||= [];
 window.Webflow.push(() => {
-  console.log('Webflow loaded');
-  // // find an element with id singlehaushalt and click it without scrolling to that part of the page
-  // document.getElementById('singlehaushalt')?.click();
-
-  //check the checkbox with id singlehaushalt
-  const singlehaushaltCheckbox = document.getElementById('singlehaushalt') as HTMLInputElement;
-  singlehaushaltCheckbox.checked = true;
-
-  // grab the all radio buttons named size and filter them to see which one is checked
-
   const sizeInputs = document.getElementsByName('size');
   let size = 'Singlehaushalt';
-  // set the values of the ui elements to the values of the familyEnergy object
-  size = changeResults(size, sizeInputs[0]);
+
   for (const sizeInput of sizeInputs) {
     if ((sizeInput as HTMLInputElement).checked) {
       size = (sizeInput as HTMLInputElement).value;
+      changeResults(size, sizeInput);
       break;
     }
   }
 
+  // set the values of the ui elements to the values of the familyEnergy object
+
   // add event listeners for size radio buttons that change the size variable based on the selected radio button
   for (const sizeInput of sizeInputs) {
     sizeInput.addEventListener('change', () => {
-      size = changeResults(size, sizeInput);
+      for (const sizeInput of sizeInputs) {
+        if ((sizeInput as HTMLInputElement).checked) {
+          size = (sizeInput as HTMLInputElement).value;
+          break;
+        }
+      }
+      if (size === 'Gro') {
+        calculateCustom();
+      } else {
+        changeResults(size, sizeInput);
+      }
     });
   }
 });
 
+//create a event listener on module input that calls the calculateCustom function
+document.getElementById('module')?.addEventListener('input', calculateCustom);
+
+function calculateCustom() {
+  const moduleWrapperElement = document.getElementById('module-wrapper');
+  //select a module input element
+  const moduleElement = document.getElementById('module') as HTMLInputElement;
+  //get the input value and convert it to number and make sure its at least 1
+  const module = Math.max(Number(moduleElement.value), 1);
+
+  moduleWrapperElement?.classList.remove('hide');
+  //calculate the price how it is but make sure if its 5 module that the price is 5199 const price = 1099 * Math.max(module, 5);
+  const price = module <= 5 ? 5199 : 1099 * Math.max(module, 5);
+
+  const priceElement = document.getElementById('price');
+  priceElement!.textContent = price.toString();
+  //get gesamtleistung element and set the text content
+  const gesamterzeugungElement = document.getElementById('gesamtleistung');
+  gesamterzeugungElement!.textContent = (400 * Math.max(module, 5)).toString();
+}
+
 function changeResults(size: string, sizeInput: HTMLElement) {
   size = (sizeInput as HTMLInputElement).value;
+
   //filter the familyEnergyData array to get the object that matches the selected family size
   const [familyEnergy] = familyEnergyData.filter(
     (data) => data.familySize === size
@@ -43,13 +66,27 @@ function changeResults(size: string, sizeInput: HTMLElement) {
 
   //get the fesamterzeugung element and replace the text with the value from the familyEnergy object
   const gesamterzeugungElement = document.getElementById('gesamtleistung');
-  gesamterzeugungElement!.textContent = gesamterzeugung.toString();
+  // if the size is Gro then set it to a custom string
+  if (size === 'Gro') {
+    gesamterzeugungElement!.textContent = '>5.000 kWh';
+  } else gesamterzeugungElement!.textContent = gesamterzeugung.toString();
+
   //get the module input element and replace the text with the value from the familyEnergy object
   const moduleElement = document.getElementById('module') as HTMLInputElement;
   moduleElement!.value = module.toString();
-  //set the price to be 1099*the number of module, get the price element and set the text content to the price
-  const price = 1099 * module;
-  const priceElement = document.getElementById('price');
-  priceElement!.textContent = price.toString();
+  //set the price to be 1099*the number of module, get the price element and set the text content to the price with the module being min 5
+  //only run this if gro is selected
+  const moduleWrapperElement = document.getElementById('module-wrapper');
+
+  if (size === 'Gro') {
+    //remove the hide class from module wrapper
+  } else {
+    //add the hide class to the module input
+    moduleWrapperElement?.classList.add('hide');
+    const price = familyEnergy.preis;
+    const priceElement = document.getElementById('price');
+    priceElement!.textContent = price.toString();
+  }
+
   return size;
 }

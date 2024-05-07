@@ -6,10 +6,11 @@ export interface FamilyEnergyData {
   eigennutzung: number;
   autarkie: number;
   gesamterzeugung: number;
-  gesamtbedarf: number;
-  imageWinter: string;
-  imageSummer: string;
+  //string or number
+  gesamtbedarf: string | number;
+
   module: number;
+  preis: number;
 }
 
 export const familyEnergyData: FamilyEnergyData[] = [
@@ -19,9 +20,9 @@ export const familyEnergyData: FamilyEnergyData[] = [
     autarkie: 16, // Example value in percentage
     gesamterzeugung: 400, // Total production in kWh
     gesamtbedarf: 2500, // Total demand in kWh
-    imageWinter: 'https://via.placeholder.com/150',
-    imageSummer: 'https://via.placeholder.com/150',
+
     module: 1,
+    preis: 1099,
   },
   {
     familySize: 'Kleinfamilie',
@@ -29,9 +30,9 @@ export const familyEnergyData: FamilyEnergyData[] = [
     autarkie: 27,
     gesamterzeugung: 1000,
     gesamtbedarf: 3500,
-    imageWinter: 'https://via.placeholder.com/150',
-    imageSummer: 'https://via.placeholder.com/150',
+
     module: 2.5,
+    preis: 2699,
   },
   {
     familySize: 'Grofamilie',
@@ -39,9 +40,8 @@ export const familyEnergyData: FamilyEnergyData[] = [
     autarkie: 34,
     gesamterzeugung: 2000,
     gesamtbedarf: 5000,
-    imageWinter: 'https://via.placeholder.com/150',
-    imageSummer: 'https://via.placeholder.com/150',
     module: 5,
+    preis: 5199,
   },
 ];
 window.Webflow ||= [];

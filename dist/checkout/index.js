@@ -14438,9 +14438,8 @@
       // Total production in kWh
       gesamtbedarf: 2500,
       // Total demand in kWh
-      imageWinter: "https://via.placeholder.com/150",
-      imageSummer: "https://via.placeholder.com/150",
-      module: 1
+      module: 1,
+      preis: 1099
     },
     {
       familySize: "Kleinfamilie",
@@ -14448,9 +14447,8 @@
       autarkie: 27,
       gesamterzeugung: 1e3,
       gesamtbedarf: 3500,
-      imageWinter: "https://via.placeholder.com/150",
-      imageSummer: "https://via.placeholder.com/150",
-      module: 2.5
+      module: 2.5,
+      preis: 2699
     },
     {
       familySize: "Grofamilie",
@@ -14458,9 +14456,8 @@
       autarkie: 34,
       gesamterzeugung: 2e3,
       gesamtbedarf: 5e3,
-      imageWinter: "https://via.placeholder.com/150",
-      imageSummer: "https://via.placeholder.com/150",
-      module: 5
+      module: 5,
+      preis: 5199
     }
   ];
   window.Webflow ||= [];
@@ -14673,27 +14670,45 @@
   });
 
   // src/checkout/index.ts
-  console.log("Webflow loaded");
   window.Webflow ||= [];
   window.Webflow.push(() => {
-    console.log("Webflow loaded");
-    const singlehaushaltCheckbox = document.getElementById("singlehaushalt");
-    singlehaushaltCheckbox.checked = true;
     const sizeInputs = document.getElementsByName("size");
     let size = "Singlehaushalt";
-    size = changeResults(size, sizeInputs[0]);
     for (const sizeInput of sizeInputs) {
       if (sizeInput.checked) {
         size = sizeInput.value;
+        changeResults(size, sizeInput);
         break;
       }
     }
     for (const sizeInput of sizeInputs) {
       sizeInput.addEventListener("change", () => {
-        size = changeResults(size, sizeInput);
+        for (const sizeInput2 of sizeInputs) {
+          if (sizeInput2.checked) {
+            size = sizeInput2.value;
+            break;
+          }
+        }
+        if (size === "Gro") {
+          calculateCustom();
+        } else {
+          changeResults(size, sizeInput);
+        }
       });
     }
   });
+  document.getElementById("module")?.addEventListener("input", calculateCustom);
+  function calculateCustom() {
+    const moduleWrapperElement = document.getElementById("module-wrapper");
+    const moduleElement = document.getElementById("module");
+    const module = Math.max(Number(moduleElement.value), 1);
+    moduleWrapperElement?.classList.remove("hide");
+    const price = module <= 5 ? 5199 : 1099 * Math.max(module, 5);
+    const priceElement = document.getElementById("price");
+    priceElement.textContent = price.toString();
+    const gesamterzeugungElement = document.getElementById("gesamtleistung");
+    gesamterzeugungElement.textContent = (400 * Math.max(module, 5)).toString();
+  }
   function changeResults(size, sizeInput) {
     size = sizeInput.value;
     const [familyEnergy] = familyEnergyData.filter(
@@ -14701,12 +14716,20 @@
     );
     const { gesamterzeugung, module } = familyEnergy;
     const gesamterzeugungElement = document.getElementById("gesamtleistung");
-    gesamterzeugungElement.textContent = gesamterzeugung.toString();
+    if (size === "Gro") {
+      gesamterzeugungElement.textContent = ">5.000 kWh";
+    } else
+      gesamterzeugungElement.textContent = gesamterzeugung.toString();
     const moduleElement = document.getElementById("module");
     moduleElement.value = module.toString();
-    const price = 1099 * module;
-    const priceElement = document.getElementById("price");
-    priceElement.textContent = price.toString();
+    const moduleWrapperElement = document.getElementById("module-wrapper");
+    if (size === "Gro") {
+    } else {
+      moduleWrapperElement?.classList.add("hide");
+      const price = familyEnergy.preis;
+      const priceElement = document.getElementById("price");
+      priceElement.textContent = price.toString();
+    }
     return size;
   }
 })();

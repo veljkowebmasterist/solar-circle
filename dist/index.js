@@ -14438,9 +14438,8 @@
       // Total production in kWh
       gesamtbedarf: 2500,
       // Total demand in kWh
-      imageWinter: "https://via.placeholder.com/150",
-      imageSummer: "https://via.placeholder.com/150",
-      module: 1
+      module: 1,
+      preis: 1099
     },
     {
       familySize: "Kleinfamilie",
@@ -14448,9 +14447,8 @@
       autarkie: 27,
       gesamterzeugung: 1e3,
       gesamtbedarf: 3500,
-      imageWinter: "https://via.placeholder.com/150",
-      imageSummer: "https://via.placeholder.com/150",
-      module: 2.5
+      module: 2.5,
+      preis: 2699
     },
     {
       familySize: "Grofamilie",
@@ -14458,9 +14456,8 @@
       autarkie: 34,
       gesamterzeugung: 2e3,
       gesamtbedarf: 5e3,
-      imageWinter: "https://via.placeholder.com/150",
-      imageSummer: "https://via.placeholder.com/150",
-      module: 5
+      module: 5,
+      preis: 5199
     }
   ];
   window.Webflow ||= [];
