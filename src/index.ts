@@ -18,7 +18,7 @@ export const familyEnergyData: FamilyEnergyData[] = [
     familySize: 'Singlehaushalt',
     eigennutzung: 100, // Example value in kWh
     autarkie: 16, // Example value in percentage
-    gesamterzeugung: 400, // Total production in kWh
+    gesamterzeugung: 370, // Total production in kWh
     gesamtbedarf: 2500, // Total demand in kWh
 
     module: 1,
@@ -28,7 +28,7 @@ export const familyEnergyData: FamilyEnergyData[] = [
     familySize: 'Kleinfamilie',
     eigennutzung: 96,
     autarkie: 27,
-    gesamterzeugung: 1000,
+    gesamterzeugung: 925,
     gesamtbedarf: 3500,
 
     module: 2.5,
@@ -38,7 +38,7 @@ export const familyEnergyData: FamilyEnergyData[] = [
     familySize: 'Grofamilie',
     eigennutzung: 84,
     autarkie: 34,
-    gesamterzeugung: 2000,
+    gesamterzeugung: 1850,
     gesamtbedarf: 5000,
     module: 5,
     preis: 5199,
