@@ -82,7 +82,7 @@ function changeResults(size: string, sizeInput: HTMLElement) {
     //remove the hide class from module wrapper
   } else {
     //add the hide class to the module input
-    moduleWrapperElement?.classList.add('hide');
+    // moduleWrapperElement?.classList.add('hide');
     const price = familyEnergy.preis;
     const priceElement = document.getElementById('price');
     priceElement!.textContent = price.toString();

@@ -16,9 +16,9 @@ export interface FamilyEnergyData {
 export const familyEnergyData: FamilyEnergyData[] = [
   {
     familySize: 'Singlehaushalt',
-    eigennutzung: 100, // Example value in kWh
+    eigennutzung: 98, // Example value in percentage
     autarkie: 16, // Example value in percentage
-    gesamterzeugung: 370, // Total production in kWh
+    gesamterzeugung: 370, // Total production in kWp
     gesamtbedarf: 2500, // Total demand in kWh
 
     module: 1,
