@@ -38,20 +38,21 @@ document.getElementById('module')?.addEventListener('input', calculateCustom);
 
 function calculateCustom() {
   const moduleWrapperElement = document.getElementById('module-wrapper');
+  moduleWrapperElement?.classList.remove('hide');
   //select a module input element
   const moduleElement = document.getElementById('module') as HTMLInputElement;
   //get the input value and convert it to number and make sure its at least 1
-  const module = Math.max(Number(moduleElement.value), 1);
+  const module = Math.max(Number(moduleElement.value), 5);
 
   moduleWrapperElement?.classList.remove('hide');
   //calculate the price how it is but make sure if its 5 module that the price is 5199 const price = 1099 * Math.max(module, 5);
-  const price = module <= 5 ? 5199 : 1099 * Math.max(module, 5);
+  const price = module <= 5 ? 5199 : 1099 * Math.max(Math.ceil(module), 5);
 
   const priceElement = document.getElementById('price');
   priceElement!.textContent = price.toString();
   //get gesamtleistung element and set the text content
   const gesamterzeugungElement = document.getElementById('gesamtleistung');
-  gesamterzeugungElement!.textContent = (400 * Math.max(module, 5)).toString();
+  gesamterzeugungElement!.textContent = (370 * Math.max(module, 5)).toString();
 }
 
 function changeResults(size: string, sizeInput: HTMLElement) {
@@ -74,19 +75,14 @@ function changeResults(size: string, sizeInput: HTMLElement) {
   //get the module input element and replace the text with the value from the familyEnergy object
   const moduleElement = document.getElementById('module') as HTMLInputElement;
   moduleElement!.value = module.toString();
+  moduleElement!.textContent = module.toString();
   //set the price to be 1099*the number of module, get the price element and set the text content to the price with the module being min 5
-  //only run this if gro is selected
+  //add the hide class to the module input
   const moduleWrapperElement = document.getElementById('module-wrapper');
-
-  if (size === 'Gro') {
-    //remove the hide class from module wrapper
-  } else {
-    //add the hide class to the module input
-    // moduleWrapperElement?.classList.add('hide');
-    const price = familyEnergy.preis;
-    const priceElement = document.getElementById('price');
-    priceElement!.textContent = price.toString();
-  }
-
+  moduleWrapperElement?.classList.add('hide');
+  // moduleWrapperElement?.classList.add('hide');
+  const price = familyEnergy.preis;
+  const priceElement = document.getElementById('price');
+  priceElement!.textContent = price.toString();
   return size;
 }
