@@ -25,6 +25,9 @@ window.Webflow.push(() => {
         }
       }
       if (size === 'Gro') {
+        const moduleElement = document.getElementById('module') as HTMLInputElement;
+        moduleElement!.value = '5';
+        moduleElement!.textContent = '5';
         calculateCustom();
       } else {
         changeResults(size, sizeInput);
