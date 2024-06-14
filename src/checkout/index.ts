@@ -67,10 +67,8 @@ function changeResults(size: string, sizeInput: HTMLElement) {
 
   //get the fesamterzeugung element and replace the text with the value from the familyEnergy object
   const gesamterzeugungElement = document.getElementById('gesamtleistung');
-  // if the size is Gro then set it to a custom string
-  if (size === 'Gro') {
-    gesamterzeugungElement!.textContent = '>5.000 kWh';
-  } else gesamterzeugungElement!.textContent = gesamterzeugung.toString();
+
+  gesamterzeugungElement!.textContent = gesamterzeugung.toString();
 
   //get the module input element and replace the text with the value from the familyEnergy object
   const moduleElement = document.getElementById('module') as HTMLInputElement;
